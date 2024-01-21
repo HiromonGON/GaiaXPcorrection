@@ -27,3 +27,27 @@ https://github.com/HiromonGON/GaiaXPcorrection
 or download the source code from the permalink:
 https://doi.org/10.12149/101376
 
+# Quick start
+Correction for one spectrum
+
+1) correction for one spectrum:
+--------------------------------------------------------------------------------  
+Input              Description           Format                     Default
+--------------------------------------------------------------------------------
+flux_origin        original spectrum     nparray                     none
+G                  G magnitude           float                       none
+error              flux error            nparray                     False
+Truncation         Optional in GaiaXPy   bool                        False
+absolute_correction absolute_correction  bool                        True
+--------------------------------------------------------------------------------
+Output             Description                          Format
+--------------------------------------------------------------------------------                      
+flux_out           corrected spectrum                 float64 nparray          
+caution            Reliability of corrections         int64 nparray
+C2                 derived from original spectrum     float64
+C3                 derived from original spectrum     float64
+--------------------------------------------------------------------------------  
+
+from GaiaDR3XPspectracorrectionV1 import Gaia_Correction_V1
+[flux_out,caution,C2,C3] = Gaia_Correction_V1.correction(flux_origin,G,error,Truncation=False,absolute_correction=True)
+
