@@ -1,0 +1,143 @@
+Gaia Data Release 3 光谱改正  1.0版   
+Chinese Version
+================================================================================
+更新历史
+v0.1 Based on CALSPEC (2020 April version) and NGSL
+v0.2 Based on CALSPEC (2020 April version), NGSL and LAMOST DR7
+v0.4 Based on CALSPEC (2020 April version), NGSL, LAMOST DR7 and corrected Gaia
+DR3 photometry
+
+v1.0 Based on CALSPEC (2023 September version), NGSL, LAMOST DR7. The definition
+of Caution have changed.
+================================================================================
+
+简介:
+GaiaDR3XPspectracorrectionV1是一个天文Python包用以修正Gaia DR3 XP光谱，修正后的光谱可以
+显著消除原始Gaia DR3 XP光谱的系统误差，更多信息请参见我们的论文(Huang et al. 2024)。
+
+我们可以给大致如下范围内的源提供稳健的修正：
+−0.5 < BP − RP < 2
+3 < G < 17.5 
+E(B − V) < 0.8
+超过该范围内的源，改正包所给出改正的正确性未经过测试。
+
+
+
+文件概览:
+--------------------------------------------------------------------------------
+文件名                简介
+--------------------------------------------------------------------------------
+自述文件              此文件
+Gaia_Correction.py   修正模组
+****.csv             光谱改正参数
+example.py           使用示例
+--------------------------------------------------------------------------------
+
+使用函数：
+1 程序包结构
+GaiaDR3XPspectracorrectionV1 程序包名
+Gaia_Correction_V1           模组名
+correction                   函数名1
+correction_df		    函数名2
+2 程序包依赖:numpy,pandas,os
+
+
+
+3 快速使用
+from GaiaDR3XPspectracorrectionV1 import Gaia_Correction_V1
+1) 改正单条光谱时
+[flux_out,caution,C2,C3] = Gaia_Correction_V1.correction(flux_origin,G,error,Truncation=False,absolute_correction=True)
+
+2) 改正由gaiaxy中calibrate函数得到的dataframe时
+dataframe_out = Gaia_Correction_V1.correction_df(dataframe_origin,G,have_error=True,Truncation=False,absolute_correction=True)
+
+3) 也可以参考example.py，
+
+
+
+4 参数传递
+1)当改正单条光谱时：
+--------------------------------------------------------------------------------
+输入参数             内容                  格式描述                     缺省值
+--------------------------------------------------------------------------------
+flux_origin        原始光谱               nparray                      无
+G                  G波段星等              float                        无
+error              原始光谱误差            nparray                     False
+Truncation         是否使用推荐截断         bool                        False
+absolute_correction 绝对定标               bool                       True
+--------------------------------------------------------------------------------
+输出参数             内容                  格式描述
+--------------------------------------------------------------------------------                      
+flux_out           改正后光谱              float64 nparray          
+caution            改正可靠性提示           int64 nparray
+C2                 由光谱计算得到的C2       float64
+C3                 由光谱计算得到的C3       float64
+
+
+2)改正由gaiaxy中calibrate函数得到的dataframe时：
+--------------------------------------------------------------------------------
+输入参数             内容                       格式描述                     缺省值
+--------------------------------------------------------------------------------
+dataframe_origin   原始光谱dataframe           dataframe                    无
+G                  G波段星等                   float nparray                无
+have_error         计算C2和C3时是否使用光谱误差   bool                       True
+Truncation         是否使用推荐截断              bool                       False
+absolute_correction 绝对定标                    bool                       True
+--------------------------------------------------------------------------------
+输出参数             内容                  格式描述                   
+--------------------------------------------------------------------------------                      
+dataframe_out   原始光谱dataframe         dataframe                    
+
+
+
+3)改正由gaiaxy中calibrate函数得到的dataframe时，dataframe_origin和dataframe_out的具体格式
+如果have_error=True，则dataframe_origin至少包含flux和flux_error两列，如果have_error=False，
+则dataframe_origin至少包含flux一列
+--------------------------------------------------------------------------------
+dataframe_origin数据格式：
+--------------------------------------------------------------------------------
+index    source_id           flux                 flux_error
+0          int64         float nparray           float nparray
+1          int64         float nparray           float nparray
+2          int64         float nparray           float nparray
+...
+------------------------------------------------------------------------------------------------------
+dataframe_out数据格式：
+------------------------------------------------------------------------------------------------------
+index  source_id         flux        flux_error        flux_cor            C2        C3      Caution
+0        int64       float nparray     不做修改    	  float nparray      float64   float64  int nparray
+1        int64       float nparray     不做修改       float nparray      float64   float64  int nparray
+2        int64       float nparray     不做修改       float nparray      float64   float64  int nparray
+...
+------------------------------------------------------------------------------------------------------
+
+
+5 修正可靠性提示caution
+caution中三项分别依次提示C2、C3、和G项的修正方式，可出现0、1、2、3四个数。当caution的值为
+[0 0 0]，[0 0 1]或[0 0 2]时，表示此改正工作在正常范围
+
+第一项                   
+0 C2项在改正范围内
+1 C2项在改正范围内，但是在参数范围边缘，请注意可靠性
+2 C2项在改正范围外，不可靠
+
+
+
+第二项                   
+0 C3项在改正范围内
+1 C3项在改正范围内，但是在参数范围边缘，请注意可靠性
+2 C3项在改正范围外，不可靠
+
+
+第三项                   
+0 G项仅靠经验谱改正
+1 G项靠LAMOST光谱改正，改正零点由经验谱提供
+2 G项靠LAMOST光谱改正，改正零点超出经验谱范围
+3 G项在经验谱和LAMOST改正范围之外，即G>17.4或G<2.703
+如果G>17.4时，则使用G=17.4时的LAMOST改正和经验谱G=17.122这个源的零点
+如果G<2.703，则使用G=2.703时的经验谱改正
+
+
+如有任何歧义，以中文版本为准。
+================================================================================
+2024年1月15日

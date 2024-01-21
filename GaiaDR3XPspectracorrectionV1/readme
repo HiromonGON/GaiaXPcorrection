@@ -1,0 +1,148 @@
+Gaia Data Release 3 correction  Version 1.0
+English version
+================================================================================
+Update history
+v0.1 Based on CALSPEC (2020 April version) and NGSL
+v0.2 Based on CALSPEC (2020 April version), NGSL and LAMOST DR7
+v0.4 Based on CALSPEC (2020 April version), NGSL, LAMOST DR7 and corrected Gaia
+DR3 photometry
+
+v1.0 Based on CALSPEC (2023 September version), NGSL, LAMOST DR7
+
+
+================================================================================
+
+Abstract：
+GaiaDR3XPspectracorrectionV1 is an astronomy Python package to provide a correction
+for the Gaia DR3 XP spectra. The corrected spectra can significantly eliminate the 
+systematic errors of the original Gaia DR3 XP spectra, please refer to our 
+paper (Huang et al. 2024) for more information.
+
+We can give robust corrections for sources in the roughly following range:
+−0.5 < BP − RP < 2
+3 < G < 17.5 
+E(B − V) < 0.8
+Sources that do not fall into this range are not tested for the correctness of the 
+corrections given by the correction package.
+
+Overview:
+--------------------------------------------------------------------------------
+File name           Description
+--------------------------------------------------------------------------------
+readme              this file
+Gaia_Correction.py  module
+****.csv            parameters for correction
+example.py          example
+--------------------------------------------------------------------------------
+
+
+1 Package Structure
+GaiaDR3XPspectracorrectionV1 package name
+Gaia_Correction              module name
+correction                   function 1
+correction_df		    function 2
+2 Dependencies:numpy,pandas,os
+
+
+
+3 Quickly start
+from GaiaDR3XPspectracorrectionV1 import Gaia_Correction_V1
+1) Correction for one spectrum
+[flux_out,caution,C2,C3] = Gaia_Correction_V1.correction(flux_origin,G,error,Truncation=False,absolute_correction=True)
+
+2) Correction for a dataframe from GaiaXPy 
+dataframe_out = Gaia_Correction_V1.correction_df(dataframe_origin,G,have_error=True,Truncation=False,absolute_correction=True)
+
+3) You can also refer to example.py
+
+
+
+
+4 Arguments
+1) correction for one spectrum:
+--------------------------------------------------------------------------------
+Input              Description           Format                     Default
+--------------------------------------------------------------------------------
+flux_origin        original spectrum     nparray                     none
+G                  G magnitude           float                       none
+error              flux error            nparray                     False
+Truncation         Optional in GaiaXPy   bool                        False
+absolute_correction absolute_correction  bool                        True
+--------------------------------------------------------------------------------
+Output             Description                          Format
+--------------------------------------------------------------------------------                      
+flux_out           corrected spectrum                 float64 nparray          
+caution            Reliability of corrections         int64 nparray
+C2                 derived from original spectrum     float64
+C3                 derived from original spectrum     float64
+
+
+2) correction for a dataframe from GaiaXPy:
+--------------------------------------------------------------------------------
+Input              Description               Format                     Default
+--------------------------------------------------------------------------------
+dataframe_origin   dataframe from GaiaXPy    dataframe                   None
+G                  G magnitude               nparray                     None
+have_error         Whether to use flux_error when deriving C2 and C3
+					   bool                       True
+
+Truncation         Optional in GaiaXPy        bool                       False
+absolute_correction absolute_correction  bool                        True
+--------------------------------------------------------------------------------
+Output             Description                Format                  
+--------------------------------------------------------------------------------                      
+dataframe_out      corrected dataframe       dataframe                        
+
+
+
+3) Formats of dataframe_origin and dataframe_out
+If have_error=True, the dataframe_origin should have at least two columns, flux and flux_error.
+If have_error=False, the dataframe_origin should have at least one column, flux.
+--------------------------------------------------------------------------------
+dataframe_origin format：
+--------------------------------------------------------------------------------
+index    source_id           flux                 flux_error
+0          int64         float nparray           float nparray
+1          int64         float nparray           float nparray
+2          int64         float nparray           float nparray
+...
+--------------------------------------------------------------------------------
+dataframe_out format：
+--------------------------------------------------------------------------------
+index  source_id     flux        flux_error    flux_cor        C2        C3      Caution
+0        int64   float nparray   no change  float nparray  float64   float64  int nparray
+1        int64   float nparray   no change  float nparray  float64   float64  int nparray
+2        int64   float nparray   no change  float nparray  float64   float64  int nparray
+...
+--------------------------------------------------------------------------------
+
+
+5 Reliability of corrections 'caution'
+
+The three items in the 'caution' correspond to the correction methods for C2, C3, and G terms, respectively. Each item can take one of the four values: 0, 1, 2, or 3. When the caution values are [0 0 0], [0 0 1], or [0 0 2], it indicates that the correction work is within the normal range.
+
+Item 1:
+0 The correction for the C2 term is within the acceptable range.
+1 The correction for the C2 term is within the acceptable range, but it is on the edge of the parameter range. Please be cautious about its reliability.
+2 The correction for the C2 term is outside the acceptable range and is deemed unreliable. 
+
+Item 2:
+0 The correction for the C3 term is within the acceptable range.
+1 The correction for the C3 term is within the acceptable range, but it is on the edge of the parameter range. Please be cautious about its reliability.
+2 The correction for the C3 term is outside the acceptable range and is deemed unreliable. 
+
+Item 3:
+0 The G term is corrected based on empirical spectra.
+1 The G term is corrected based on LAMOST spectra, with the correction zero point derived from empirical spectra.
+2 The G term is corrected based on LAMOST spectra, but the correction zero point exceeds the range of empirical spectra.
+3 The G term is outside the correction range of both empirical spectra and LAMOST (G>17.4 or G<2.703).
+If G>17.4, then use the correction from LAMOST at G=17.4 and the empirical spectrum at G=17.122 for the zero-point.
+If G<2.703, then use the correction from empirical spectrum for G=2.703
+
+
+
+
+
+In case of any ambiguity, the Chinese version shall prevail.
+================================================================================
+2024.1.15
