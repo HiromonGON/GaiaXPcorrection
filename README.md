@@ -18,3 +18,12 @@ https://github.com/HiromonGON/GaiaXPcorrection/blob/main/GaiaDR3XPspectracorrect
 Chinese Version in 
 https://github.com/HiromonGON/GaiaXPcorrection/blob/main/GaiaDR3XPspectracorrectionV1/%E8%87%AA%E8%BF%B0%E6%96%87%E4%BB%B6
 
+# How to install
+From source 
+
+This package can be installed from the source code after downloading it from the git repo: 
+https://github.com/HiromonGON/GaiaXPcorrection
+
+or download the source code from the permalink:
+https://doi.org/10.12149/101376
+
