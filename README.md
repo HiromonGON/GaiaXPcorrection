@@ -21,7 +21,7 @@ This package can be installed from the source code after downloading it from the
 https://github.com/HiromonGON/GaiaXPcorrection
 
 or download the source code from the permalink:
-https://doi.org/10.12149/101376
+https://doi.org/10.12149/101375
 
 # Quick start
 Correction for one spectrum
