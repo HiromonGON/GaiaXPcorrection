@@ -23,7 +23,7 @@ flux_origin = flux_origin[0]
 gaia_wl = np.linspace(3360,3360+20*342,343)
 #%% Correction
 flux_out = Gaia_Correction_V1.correction_df(flux_origin,G,have_error=True,Truncation=False,absolute_correction=True)
-#%% correction for dataframe
+#%% Plot
 plt.figure()
 plt.plot(gaia_wl,flux_out.flux_cor[0],color='b')
 plt.plot(gaia_wl,flux_out.flux[0],color='r')
