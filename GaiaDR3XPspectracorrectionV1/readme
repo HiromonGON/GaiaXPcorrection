@@ -27,12 +27,13 @@ corrections given by the correction package.
 
 Overview:
 --------------------------------------------------------------------------------
-File name           Description
+File name                Description
 --------------------------------------------------------------------------------
-readme              this file
-Gaia_Correction.py  module
-****.csv            parameters for correction
-example.py          example
+readme                   this file
+Gaia_Correction.py       module
+****.csv                 parameters for correction
+example.py               example
+example_file_coeff.csv   The coefficients of Gaia XP spectra for example.py
 --------------------------------------------------------------------------------
 
 
