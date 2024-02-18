@@ -29,9 +29,10 @@ Correction for one spectrum
 from GaiaDR3XPspectracorrectionV1 import Gaia_Correction_V1
 [flux_out,caution,C2,C3] = Gaia_Correction_V1.correction(flux_origin,G,error,Truncation=False,absolute_correction=True)
 
+Or refer to example.py
 
 
-More information for the usage of this package in
+# More information for the usage of this package in
 https://github.com/HiromonGON/GaiaXPcorrection/blob/main/GaiaDR3XPspectracorrectionV1/readme
 
 Chinese Version in 
