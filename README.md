@@ -32,7 +32,8 @@ from GaiaDR3XPspectracorrectionV1 import Gaia_Correction_V1
 Or refer to example.py
 
 
-# More information for the usage of this package in
+# More information for the usage of this package 
+English Version in
 https://github.com/HiromonGON/GaiaXPcorrection/blob/main/GaiaDR3XPspectracorrectionV1/readme
 
 Chinese Version in 
