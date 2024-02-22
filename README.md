@@ -3,7 +3,7 @@
 GaiaDR3XPspectracorrectionV1 is an astronomy Python package to provide a correction
 for the Gaia DR3 XP spectra. The corrected spectra can significantly eliminate the 
 systematic errors of the original Gaia DR3 XP spectra, please refer to our 
-paper (Huang et al. 2024) for more details. 
+paper ([Huang et al. 2024](https://iopscience.iop.org/article/10.3847/1538-4365/ad18b1)) for more details. 
 
 We can give robust corrections for sources in the roughly following range:
 −0.5 < BP − RP < 2
